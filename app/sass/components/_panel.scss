@@ -1,0 +1,23 @@
+/*------------------------------------*\
+    # PANEL
+\*------------------------------------*/
+
+.c-panel {
+  display: flex;
+  width: 100%;
+}
+
+/**
+ * Some sort of inital width
+ */
+.c-panel--secondary {
+  min-width: 240px; /* [1] */
+  background-color: $c-gray-7;
+
+  text-align: center;
+  align-items: center;
+
+  > p {
+    width: 100%;
+  }
+}

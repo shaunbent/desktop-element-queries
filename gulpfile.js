@@ -19,7 +19,7 @@ const nanoOptions = {
 // tasks
 gulp.task('styles', () =>
     gulp
-        .src('sass/*.scss')
+        .src('app/sass/*.scss')
         .pipe(
             $.sass(sassOptions)
                 .on('error', $.sass.logError)
@@ -32,7 +32,7 @@ gulp.task('styles', () =>
 gulp.task('views', () =>
     gulp
         .src([
-          '**/*.html',
+          'app/**/*.html',
           '!node_modules/**/*.html'
         ])
         .pipe(gulp.dest('dist'))
@@ -47,8 +47,8 @@ gulp.task('default', ['build'], () => {
         online: true
     });
 
-    gulp.watch('sass/**/*.scss', ['styles']);
-    gulp.watch('**/*.html', ['views']);
+    gulp.watch('app/sass/**/*.scss', ['styles']);
+    gulp.watch('app/**/*.html', ['views']);
     gulp.watch([
         'dist/**/*.html',
         'dist/css/*.css'

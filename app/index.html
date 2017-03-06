@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spotify Desktop</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="c-app">
+  <div class="c-app__panel-container">
+    <div class="c-app__panel">
+      <div class="c-panel c-panel--secondary">
+        <p>Navbar</p>
+      </div>
+    </div>
+    <div class="c-app__panel c-app__panel--primary" id="app-panel">
+      <div class="c-panel c-panel--primary">
+        <div>
+          <p><b>Main Content</b></p>
+          <div class="resize-info"></div>
+        </div>
+      </div>
+    </div>
+    <div class="c-app__panel">
+      <div class="c-panel c-panel--secondary">
+        <p>Friend Feed</p>
+      </div>
+    </div>
+  </div>
+  <div class="c-app__player">
+    <p>Player</p>
+  </div>
+</div>
+
+<script>
+
+const resizeInfoElement = document.querySelector('.resize-info');
+const ro = new ResizeObserver(entries => {
+  for (let entry of entries) {
+    const resizeInfo = `
+      <p>
+        <b>Width:</b> ${entry.contentRect.width},
+        <b>Height:</b> ${entry.contentRect.height}
+      </p>
+    `;
+
+    resizeInfoElement.innerHTML = resizeInfo;
+  }
+});
+
+ro.observe(document.querySelector('#app-panel'));
+</script>
+</body>
+</html>

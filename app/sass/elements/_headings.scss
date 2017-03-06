@@ -1,0 +1,19 @@
+/*------------------------------------*\
+    # HEADINGS
+\*------------------------------------*/
+
+h1 {
+    @include glue-type-maxima;
+}
+
+h2 {
+    @include glue-type-longa;
+}
+
+h3 {
+    @include glue-type-breve;
+}
+
+h4 {
+    @include glue-type-semi-breve;
+}

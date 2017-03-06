@@ -1,0 +1,27 @@
+/*------------------------------------*\
+    # TYPOGRAPHY
+\*------------------------------------*/
+
+/**
+ * Utitlity classes for applying typography styles
+ */
+ 
+.u-type-maxima {
+    @include glue-type-maxima;
+}
+
+.u-type-longa {
+    @include glue-type-longa;
+}
+
+.u-type-breve {
+    @include glue-type-breve;
+}
+
+.u-type-semi-breve {
+    @include glue-type-semi-breve;
+}
+
+.u-type-minim {
+    @include glue-type-minim;
+}

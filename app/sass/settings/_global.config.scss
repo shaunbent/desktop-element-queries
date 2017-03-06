@@ -1,0 +1,76 @@
+///*------------------------------------*\
+//    # GLOBAL CONFIGURATION
+//\*------------------------------------*/
+
+// The global configuration defines a series of variables
+// which effect the entire project.
+//
+// Changing any of these variables is likely to effect the
+// entire project. Tread carefully!! You've been warned.
+
+
+// Global typography styles
+//
+// @type Number (with units)
+
+$glue-global-font-size: 16px;
+$glue-global-line-height: 24px;
+
+
+// Global spacing
+//
+// @type Number (with units)
+
+$glue-spacing-unit: 8px;
+
+
+/// Breakpoints
+//
+// Our global breakpoints allow us to make major changes in the grid and use typography
+// consistently across our products.
+//
+// Between these global breakpoints you can also add component breakpoints where the content needs it.
+
+
+// The prefix applied to all GLUE breakpoints
+//
+// @type String
+
+$glue-breakpoint-namespace: 'glue-bp-' !default;
+
+// The names applied to each of our breakpoints. We're taking a t-shirt sizing naming convention
+//
+// @type Map
+
+$glue-breakpoint-names: (s, m, l) !default;
+
+// The widths of our major breakpoints
+//
+// @type Map
+
+$glue-breakpoint-sizes: (640px, 1024px, 1440px) !default;
+
+// If we're generating a fixed width output which breakpoint to use as the maximum
+//
+// @type String
+
+$glue-breakpoint-static: glue-bp-m !default;
+
+
+// Loop through each of our breakpoint-sizes, map this with the appropriate name
+// and append it to the $mq-breakpoints map.
+
+$glue-breakpoints: ();
+@each $breakpoint in $glue-breakpoint-sizes {
+    $i: index($glue-breakpoint-sizes, $breakpoint);
+    $breakpoint-name: #{$glue-breakpoint-namespace}#{nth($glue-breakpoint-names, $i)};
+
+    $glue-breakpoints: map-merge($glue-breakpoints, ($breakpoint-name: $breakpoint)) !global;
+}
+
+
+// Map the GLUE breakpoints into the Sass MQ
+// !Do not change this!
+
+$mq-breakpoints: $glue-breakpoints;
+$mq-static-breakpoint: $glue-breakpoint-static;
