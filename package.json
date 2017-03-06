@@ -1,0 +1,31 @@
+{
+  "name": "desktop-element-queries",
+  "version": "1.0.0",
+  "description": "A test of how to mimic element queries on desktop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@ghe.spotify.net:shaunb/desktop-element-queries.git"
+  },
+  "author": "Shaun Bent <shaunb@spotify.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.5.0",
+    "npm": ">=3.10.5"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.16.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-cssnano": "^2.1.0",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-load-plugins": "^1.2.0",
+    "gulp-postcss": "^6.0.1",
+    "gulp-sass": "^2.1.1",
+    "run-sequence": "^1.2.2"
+  }
+}
