@@ -3,21 +3,116 @@
 \*------------------------------------*/
 
 .c-panel {
-  display: flex;
-  width: 100%;
+  position: relative;
+  flex: 1;
 }
 
 /**
  * Some sort of inital width
  */
 .c-panel--secondary {
-  min-width: 240px; /* [1] */
+  display: flex;
+  width: 100%;
+  min-width: 200px; /* [1] */
+  max-width: 400px;
   background-color: $c-gray-7;
 
   text-align: center;
   align-items: center;
+}
 
-  > p {
-    width: 100%;
+.navbar {
+  width: var(--navbar-width);
+}
+
+.friend-feed {
+  width: var(--friend-feed-width)
+}
+
+.c-panel__content {
+  width: 100%;
+}
+
+/**
+ * Resizer
+ */
+.c-panel__resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+
+  width: 8px;
+
+  cursor: col-resize;
+  background-color: red;
+}
+
+.c-panel__resizer--right {
+  right: -8px;
+}
+
+.c-panel__resizer--left {
+  left: -8px;
+}
+
+/**
+ * Other stuff
+ */
+
+.friend-feed {
+  display: none;
+}
+
+@media (min-width: 1190px) {
+  .friend-feed {
+    display: flex;
+  }
+}
+
+[data-min-width] {
+  background-color: red;
+}
+
+[data-min-width*="s"] {
+  background-color: green;
+}
+
+[data-min-width*="m"] {
+  background-color: blue;
+}
+
+[data-min-width*="l"] {
+  background-color: hotpink;
+}
+
+[data-min-width*="max"] {
+  background-color: purple;
+}
+
+/**
+ * Output Breakpoint
+ */
+.breakpoint-info {
+  &:after {
+    [data-min-width] & {
+      content: 'Min';
+    }
+
+    [data-min-width*="s"] & {
+      content: 'Small (592px)';
+    }
+
+    [data-min-width*="m"] & {
+      content: 'Medium (860px)';
+    }
+
+    [data-min-width*="l"] & {
+      content: 'Large (1280px)';
+    }
+
+    [data-min-width*="max"] & {
+      content: 'Max (1496px)';
+    }
   }
 }

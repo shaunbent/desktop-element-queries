@@ -9,21 +9,28 @@
 <div class="c-app">
   <div class="c-app__panel-container">
     <div class="c-app__panel">
-      <div class="c-panel c-panel--secondary">
-        <p>Navbar</p>
+      <div class="c-panel c-panel--secondary navbar" data-panel-name="navbar">
+        <div class="c-panel__content">
+          <p>Navbar</p>
+        </div>
+        <div class="c-panel__resizer c-panel__resizer--right"></div>
       </div>
     </div>
     <div class="c-app__panel c-app__panel--primary" id="app-panel">
       <div class="c-panel c-panel--primary">
-        <div>
+        <div class="o-wrap">
           <p><b>Main Content</b></p>
           <div class="resize-info"></div>
+          <div class="breakpoint-info"><b>Breakpoint:</b> </div>
         </div>
       </div>
     </div>
     <div class="c-app__panel">
-      <div class="c-panel c-panel--secondary">
-        <p>Friend Feed</p>
+      <div class="c-panel c-panel--secondary friend-feed" data-panel-name="friend-feed">
+        <div class="c-panel__content">
+          <p>Friend Feed</p>
+        </div>
+        <div class="c-panel__resizer c-panel__resizer--left"></div>
       </div>
     </div>
   </div>
@@ -33,22 +40,84 @@
 </div>
 
 <script>
-
 const resizeInfoElement = document.querySelector('.resize-info');
 const ro = new ResizeObserver(entries => {
   for (let entry of entries) {
+    const width = entry.contentRect.width;
+    const height = entry.contentRect.height;
     const resizeInfo = `
       <p>
-        <b>Width:</b> ${entry.contentRect.width},
-        <b>Height:</b> ${entry.contentRect.height}
+        <b>Width:</b> ${width}px,
+        <b>Height:</b> ${height}px
       </p>
     `;
-
     resizeInfoElement.innerHTML = resizeInfo;
+
+    // Data Attributes
+    entry.target.dataset.panelWidth = width;
+    entry.target.dataset.panelHeight = height;
+
+    // Breakpoints
+    let minWidth = '';
+    let maxWidth = '';
+    const breakpoints = {
+      'min': 376,
+      's': 592,
+      'm': 860,
+      'l': 1280,
+      'max': 1496
+    };
+
+    if (width >= breakpoints['s'] && width < breakpoints['m']) {
+      minWidth = 's';
+      maxWidth = 'm,l,max';
+    } else if (width >= breakpoints['m'] && width < breakpoints['l']) {
+      minWidth = 's,m';
+      maxWidth = 'l,max';
+    } else if (width >= breakpoints['l'] && width < breakpoints['max']) {
+      minWidth = 's,m,l';
+      maxWidth = 'max';
+    } else if (width >= breakpoints['max']) {
+      minWidth = 's,m,l,max';
+      maxWidth = '';
+    }
+
+    entry.target.dataset.minWidth = minWidth;
+    entry.target.dataset.maxWidth = maxWidth;
   }
 });
 
 ro.observe(document.querySelector('#app-panel'));
+
+let currentPanel = null;
+function resizeStarted(e) {
+  currentPanel = e.target.parentNode;
+  window.addEventListener('mousemove', resizePanel, false);
+  window.addEventListener('mouseup', resizeStopped, false);
+}
+
+function resizeStopped() {
+  currentPanel = null;
+  window.removeEventListener('mousemove', resizePanel, false);
+  window.removeEventListener('mouseup', resizeStopped, false);
+}
+
+function resizePanel(e) {
+  const panelName = currentPanel.dataset.panelName;
+  let width = e.clientX;
+
+  if (panelName === 'friend-feed') {
+    width = e.clientX - window.innerWidth;
+  }
+
+  currentPanel.style.setProperty(`--${panelName}-width`, `${width}px`);
+}
+
+const resizeHandles = document.querySelectorAll('.c-panel__resizer');
+
+resizeHandles.forEach(handle => {
+  handle.addEventListener('mousedown', resizeStarted, false);
+});
 </script>
 </body>
 </html>
