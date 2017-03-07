@@ -2,6 +2,11 @@
     # PANEL
 \*------------------------------------*/
 
+:root {
+  --navbar-width: 200px;
+  --friend-feed-width: 200px;
+}
+
 .c-panel {
   position: relative;
   flex: 1;
@@ -13,7 +18,8 @@
 .c-panel--secondary {
   display: flex;
   width: 100%;
-  min-width: 200px; /* [1] */
+  min-width: 120px;
+  width: 200px; /* [1] */
   max-width: 400px;
   background-color: $c-gray-7;
 
