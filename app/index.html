@@ -105,8 +105,13 @@ class SpotifyPanel extends HTMLElement {
 
         // Data Attributes
         entry.target.dataset.panelDimentions = `${width}/${height}`;
-        entry.target.dataset.minWidth = activeBreakpoints.minWidth.join(',');
-        entry.target.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
+        if (activeBreakpoints.minWidth.length) {
+          entry.target.dataset.minWidth = activeBreakpoints.minWidth.join(',');
+        }
+
+        if (activeBreakpoints.maxWidth.length) {
+          entry.target.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
+        }
       }
     });
 
