@@ -1,0 +1,74 @@
+/*------------------------------------*\
+    # DEMO
+\*------------------------------------*/
+
+/**
+ * Various styles that are needed for the demo but don't actually
+ * form part of the final solution
+ */
+
+// Simple warning for if you don't have everything you need for the demo
+.warning {
+  margin-top: 32px;
+  padding: 8px;
+  background-color: $c-ui-red;
+}
+
+// Hide the friend feed at certain breakpoints
+.friend-feed {
+  display: none;
+}
+
+@include mq($from: 1190px) {
+  .friend-feed {
+    display: flex;
+  }
+}
+
+// Change the background colour with the breakpoints to prove this works
+.c-demo-panel {
+  background-color: #af2896;
+
+  @include eq($from: 'glue-s') {
+    background-color: #eb1e32;
+  }
+
+  @include eq($from: 'glue-m') {
+    background-color: #f59b23;
+  }
+
+  @include eq($from: 'glue-l') {
+    background-color: #4b917d;
+  }
+
+  @include eq($from: 'glue-max') {
+    background-color: #2d46b9;
+  }
+}
+
+/**
+* Output Breakpoint
+*/
+.breakpoint-info {
+  display: none;
+
+  &:after {
+    content: 'Breakpoint: Min';
+
+    @include eq($from: 'glue-s') {
+      content: 'Breakpoint: Small (592px)';
+    }
+
+    @include eq($from: 'glue-m') {
+      content: 'Breakpoint: Medium (860px)';
+    }
+
+    @include eq($from: 'glue-l') {
+      content: 'Breakpoint: Large (1280px)';
+    }
+
+    @include eq($from: 'glue-max') {
+      content: 'Breakpoint: Max (1496px)';
+    }
+  }
+}

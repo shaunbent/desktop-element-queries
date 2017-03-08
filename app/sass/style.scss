@@ -12,6 +12,7 @@
 @import 'tools/rem';
 @import 'tools/type';
 @import 'tools/visibility';
+@import 'tools/eq';
 @import '../../node_modules/sass-mq/mq';
 
 @import 'generic/normalise';
@@ -27,6 +28,7 @@
 
 @import 'components/app';
 @import 'components/panel';
+@import 'components/demo';
 
 @import 'utilities/clearfix';
 @import 'utilities/typography';
