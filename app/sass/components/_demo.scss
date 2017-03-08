@@ -17,6 +17,11 @@
 // Hide the friend feed at certain breakpoints
 .friend-feed {
   display: none;
+  background-color: #ff6437;
+
+  @include eq($from: 'custom') {
+    background-color: #cdf564;
+  }
 }
 
 @include mq($from: 1190px) {
