@@ -16,22 +16,22 @@
         <div class="c-panel__resizer c-panel__resizer--right"></div>
       </div>
     </div>
-    <div class="c-app__panel c-app__panel--primary" id="app-panel">
+    <spotify-panel name="main" class="c-app__panel c-app__panel--primary">
       <div class="c-panel c-panel--primary c-demo-panel">
         <div class="o-wrap">
           <div class="resize-info"></div>
           <div class="breakpoint-info"></div>
         </div>
       </div>
-    </div>
-    <div class="c-app__panel">
+    </spotify-panel>
+    <spotify-panel name="friend-feed" class="c-app__panel">
       <div class="c-panel c-panel--secondary friend-feed" data-panel-name="friend-feed">
         <div class="c-panel__content">
           <p>Friend Feed</p>
         </div>
         <div class="c-panel__resizer c-panel__resizer--left"></div>
       </div>
-    </div>
+    </spotify-panel>
   </div>
   <div class="c-app__player">
     <p>Player</p>
@@ -39,63 +39,95 @@
 </div>
 
 <script>
-const resizeInfoElement = document.querySelector('.resize-info');
+const breakpoints = {
+  'main': {
+    'glue-min': 376,
+    'glue-s': 592,
+    'glue-m': 860,
+    'glue-l': 1280,
+    'glue-max': 1496
+  },
+  'friend-feed': {
+    'custom': 240
+  },
+};
 
-if (typeof ResizeObserver === 'function') {
-  document.querySelector('.breakpoint-info').style.setProperty('display', 'block');
-  const ro = new ResizeObserver(entries => {
-    for (let entry of entries) {
-      const width = entry.contentRect.width;
-      const height = entry.contentRect.height;
-      const resizeInfo = `
-        <p>
-          <b>Width:</b> ${width}px,
-          <b>Height:</b> ${height}px
-        </p>
-      `;
-      resizeInfoElement.innerHTML = resizeInfo;
+class SpotifyPanel extends HTMLElement {
+  constructor() {
+    super();
 
-      // Data Attributes
-      entry.target.dataset.panelWidth = width;
-      entry.target.dataset.panelHeight = height;
+    this._initResizeObserver();
+  }
 
-      // Breakpoints
-      let activeBreakpoints = {
-        minWidth: [],
-        maxWidth: []
-      };
-
-      const breakpoints = {
-        'glue-min': 376,
-        'glue-s': 592,
-        'glue-m': 860,
-        'glue-l': 1280,
-        'glue-max': 1496
-      };
-
-      for(breakpoint in breakpoints) {
-        if (width >= breakpoints[breakpoint]) {
-          activeBreakpoints.minWidth.push(breakpoint);
-        } else {
-          activeBreakpoints.maxWidth.push(breakpoint);
-        }
-      }
-
-      entry.target.dataset.minWidth = activeBreakpoints.minWidth.join(',');
-      entry.target.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
+  _initResizeObserver() {
+    // this is just for this demo
+    if (typeof ResizeObserver != 'function') {
+      return this._resizeObserverWarning();
     }
-  });
 
-  ro.observe(document.querySelector('#app-panel'));
-} else {
-  resizeInfoElement.innerHTML = `
-    <div class="warning">
-      <p><b>Important:</b> Requires \`ResizeObserver\`s to be enabled.</p>
-      <p>To enable in Chrome, go to \`chrome://flags\` and enable the "Experimental Web Platform flag"</p>
-    </div>
-  `;
+    // this is also just for this demo
+    const breakpointInfo = this.querySelector('.breakpoint-info');
+    if (breakpointInfo) {
+      breakpointInfo.style.setProperty('display', 'block');
+    }
+
+    const ro = new ResizeObserver(entries => {
+      const resizeInfoElement = this.querySelector('.resize-info');
+
+      for (let entry of entries) {
+        const width = entry.contentRect.width;
+        const height = entry.contentRect.height;
+        const currentPanel = entry.target.getAttribute('name');
+
+        let activeBreakpoints = {
+          minWidth: [],
+          maxWidth: []
+        };
+
+        // Resize info for the demo
+        if (resizeInfoElement) {
+          resizeInfoElement.innerHTML = `
+            <p>
+              <b>Width:</b> ${width}px,
+              <b>Height:</b> ${height}px
+            </p>
+          `;
+        }
+
+        // Loop through the breakpoints to see if they're max or min
+        for(let breakpoint in breakpoints[currentPanel]) {
+          if (width >= breakpoints[currentPanel][breakpoint]) {
+            activeBreakpoints.minWidth.push(breakpoint);
+          } else {
+            activeBreakpoints.maxWidth.push(breakpoint);
+          }
+        }
+
+        // Data Attributes
+        entry.target.dataset.panelDimentions = `${width}/${height}`;
+        entry.target.dataset.minWidth = activeBreakpoints.minWidth.join(',');
+        entry.target.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
+      }
+    });
+
+    ro.observe(this);
+  }
+
+  _resizeObserverWarning() {
+    const resizeInfoElement = this.querySelector('.resize-info');
+
+    resizeInfoElement.innerHTML = `
+      <div class="warning">
+        <p><b>Important:</b> Requires \`ResizeObserver\`s to be enabled.</p>
+        <p>To enable in Chrome, go to \`chrome://flags\` and enable the "Experimental Web Platform flag"</p>
+      </div>
+    `;
+  }
 }
 
+customElements.define('spotify-panel', SpotifyPanel);
+
+// All this stuff has to do with making the secondary panels resizable
 let currentPanel = null;
 function resizeStarted(e) {
   currentPanel = e.target.parentNode;
@@ -114,7 +146,7 @@ function resizePanel(e) {
   let width = e.clientX;
 
   if (panelName === 'friend-feed') {
-    width = e.clientX - window.innerWidth;
+    width = Math.abs(e.clientX - window.innerWidth);
   }
 
   currentPanel.style.setProperty(`--${panelName}-width`, `${width}px`);
