@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="c-app__panel c-app__panel--primary" id="app-panel">
-      <div class="c-panel c-panel--primary">
+      <div class="c-panel c-panel--primary c-demo-panel">
         <div class="o-wrap">
           <div class="resize-info"></div>
           <div class="breakpoint-info"></div>
@@ -60,32 +60,29 @@ if (typeof ResizeObserver === 'function') {
       entry.target.dataset.panelHeight = height;
 
       // Breakpoints
-      let minWidth = '';
-      let maxWidth = '';
-      const breakpoints = {
-        'min': 376,
-        's': 592,
-        'm': 860,
-        'l': 1280,
-        'max': 1496
+      let activeBreakpoints = {
+        minWidth: [],
+        maxWidth: []
       };
 
-      if (width >= breakpoints['s'] && width < breakpoints['m']) {
-        minWidth = 's';
-        maxWidth = 'm,l,max';
-      } else if (width >= breakpoints['m'] && width < breakpoints['l']) {
-        minWidth = 's,m';
-        maxWidth = 'l,max';
-      } else if (width >= breakpoints['l'] && width < breakpoints['max']) {
-        minWidth = 's,m,l';
-        maxWidth = 'max';
-      } else if (width >= breakpoints['max']) {
-        minWidth = 's,m,l,max';
-        maxWidth = '';
+      const breakpoints = {
+        'glue-min': 376,
+        'glue-s': 592,
+        'glue-m': 860,
+        'glue-l': 1280,
+        'glue-max': 1496
+      };
+
+      for(breakpoint in breakpoints) {
+        if (width >= breakpoints[breakpoint]) {
+          activeBreakpoints.minWidth.push(breakpoint);
+        } else {
+          activeBreakpoints.maxWidth.push(breakpoint);
+        }
       }
 
-      entry.target.dataset.minWidth = minWidth;
-      entry.target.dataset.maxWidth = maxWidth;
+      entry.target.dataset.minWidth = activeBreakpoints.minWidth.join(',');
+      entry.target.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
     }
   });
 
