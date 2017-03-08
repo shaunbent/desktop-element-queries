@@ -19,9 +19,8 @@
     <div class="c-app__panel c-app__panel--primary" id="app-panel">
       <div class="c-panel c-panel--primary">
         <div class="o-wrap">
-          <p><b>Main Content</b></p>
           <div class="resize-info"></div>
-          <div class="breakpoint-info"><b>Breakpoint:</b> </div>
+          <div class="breakpoint-info"></div>
         </div>
       </div>
     </div>
@@ -41,53 +40,64 @@
 
 <script>
 const resizeInfoElement = document.querySelector('.resize-info');
-const ro = new ResizeObserver(entries => {
-  for (let entry of entries) {
-    const width = entry.contentRect.width;
-    const height = entry.contentRect.height;
-    const resizeInfo = `
-      <p>
-        <b>Width:</b> ${width}px,
-        <b>Height:</b> ${height}px
-      </p>
-    `;
-    resizeInfoElement.innerHTML = resizeInfo;
 
-    // Data Attributes
-    entry.target.dataset.panelWidth = width;
-    entry.target.dataset.panelHeight = height;
+if (typeof ResizeObserver === 'function') {
+  document.querySelector('.breakpoint-info').style.setProperty('display', 'block');
+  const ro = new ResizeObserver(entries => {
+    for (let entry of entries) {
+      const width = entry.contentRect.width;
+      const height = entry.contentRect.height;
+      const resizeInfo = `
+        <p>
+          <b>Width:</b> ${width}px,
+          <b>Height:</b> ${height}px
+        </p>
+      `;
+      resizeInfoElement.innerHTML = resizeInfo;
 
-    // Breakpoints
-    let minWidth = '';
-    let maxWidth = '';
-    const breakpoints = {
-      'min': 376,
-      's': 592,
-      'm': 860,
-      'l': 1280,
-      'max': 1496
-    };
+      // Data Attributes
+      entry.target.dataset.panelWidth = width;
+      entry.target.dataset.panelHeight = height;
 
-    if (width >= breakpoints['s'] && width < breakpoints['m']) {
-      minWidth = 's';
-      maxWidth = 'm,l,max';
-    } else if (width >= breakpoints['m'] && width < breakpoints['l']) {
-      minWidth = 's,m';
-      maxWidth = 'l,max';
-    } else if (width >= breakpoints['l'] && width < breakpoints['max']) {
-      minWidth = 's,m,l';
-      maxWidth = 'max';
-    } else if (width >= breakpoints['max']) {
-      minWidth = 's,m,l,max';
-      maxWidth = '';
+      // Breakpoints
+      let minWidth = '';
+      let maxWidth = '';
+      const breakpoints = {
+        'min': 376,
+        's': 592,
+        'm': 860,
+        'l': 1280,
+        'max': 1496
+      };
+
+      if (width >= breakpoints['s'] && width < breakpoints['m']) {
+        minWidth = 's';
+        maxWidth = 'm,l,max';
+      } else if (width >= breakpoints['m'] && width < breakpoints['l']) {
+        minWidth = 's,m';
+        maxWidth = 'l,max';
+      } else if (width >= breakpoints['l'] && width < breakpoints['max']) {
+        minWidth = 's,m,l';
+        maxWidth = 'max';
+      } else if (width >= breakpoints['max']) {
+        minWidth = 's,m,l,max';
+        maxWidth = '';
+      }
+
+      entry.target.dataset.minWidth = minWidth;
+      entry.target.dataset.maxWidth = maxWidth;
     }
+  });
 
-    entry.target.dataset.minWidth = minWidth;
-    entry.target.dataset.maxWidth = maxWidth;
-  }
-});
-
-ro.observe(document.querySelector('#app-panel'));
+  ro.observe(document.querySelector('#app-panel'));
+} else {
+  resizeInfoElement.innerHTML = `
+    <div class="warning">
+      <p><b>Important:</b> Requires \`ResizeObserver\`s to be enabled.</p>
+      <p>To enable in Chrome, go to \`chrome://flags\` and enable the "Experimental Web Platform flag"</p>
+    </div>
+  `;
+}
 
 let currentPanel = null;
 function resizeStarted(e) {

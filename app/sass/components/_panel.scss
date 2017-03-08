@@ -65,6 +65,11 @@
 /**
  * Other stuff
  */
+.warning {
+  margin-top: 32px;
+  padding: 8px;
+  background-color: $c-ui-red;
+}
 
 .friend-feed {
   display: none;
@@ -100,25 +105,26 @@
  * Output Breakpoint
  */
 .breakpoint-info {
+  display: none;
   &:after {
     [data-min-width] & {
-      content: 'Min';
+      content: 'Breakpoint: Min';
     }
 
     [data-min-width*="s"] & {
-      content: 'Small (592px)';
+      content: 'Breakpoint: Small (592px)';
     }
 
     [data-min-width*="m"] & {
-      content: 'Medium (860px)';
+      content: 'Breakpoint: Medium (860px)';
     }
 
     [data-min-width*="l"] & {
-      content: 'Large (1280px)';
+      content: 'Breakpoint: Large (1280px)';
     }
 
     [data-min-width*="max"] & {
-      content: 'Max (1496px)';
+      content: 'Breakpoint: Max (1496px)';
     }
   }
 }
