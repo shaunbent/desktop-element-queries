@@ -14,9 +14,14 @@
   background-color: $c-ui-red;
 }
 
+.navbar {
+  width: var(--navbar-width);
+}
+
 // Hide the friend feed at certain breakpoints
 .friend-feed {
   display: none;
+  width: var(--friend-feed-width);
   background-color: #ff6437;
 
   @include eq($from: 'custom') {
@@ -32,17 +37,22 @@
 
 // Change the background colour with the breakpoints to prove this works
 .c-demo-panel {
+  padding-top: 32px;
+  padding-bottom: 32px;
+
+  overflow-y: scroll;
+
   background-color: #af2896;
 
-  @include eq($from: 'glue-s') {
+  @include eq($from: 'glue-sm') {
     background-color: #eb1e32;
   }
 
-  @include eq($from: 'glue-m') {
+  @include eq($from: 'glue-md') {
     background-color: #f59b23;
   }
 
-  @include eq($from: 'glue-l') {
+  @include eq($from: 'glue-lg') {
     background-color: #4b917d;
   }
 
@@ -56,19 +66,20 @@
 */
 .breakpoint-info {
   display: none;
+  margin-bottom: 16px;
 
   &:after {
     content: 'Breakpoint: Min';
 
-    @include eq($from: 'glue-s') {
+    @include eq($from: 'glue-sm') {
       content: 'Breakpoint: Small (592px)';
     }
 
-    @include eq($from: 'glue-m') {
+    @include eq($from: 'glue-md') {
       content: 'Breakpoint: Medium (860px)';
     }
 
-    @include eq($from: 'glue-l') {
+    @include eq($from: 'glue-lg') {
       content: 'Breakpoint: Large (1280px)';
     }
 
@@ -76,4 +87,14 @@
       content: 'Breakpoint: Max (1496px)';
     }
   }
+}
+
+/**
+ * Grid Demo
+ */
+.grid-demo {
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: $c-gray-25;
+  text-align: center;
 }
