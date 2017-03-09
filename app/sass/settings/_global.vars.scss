@@ -5,3 +5,10 @@
 $glue-max-width: 1496px;
 $glue-margins: 32px;
 $glue-gutters: 16px;
+
+$glue-grid-breakpoints: (
+  sm: 'glue-sm',
+  md: 'glue-md',
+  lg: 'glue-lg',
+  max: 'glue-max'
+);
