@@ -21,6 +21,54 @@
         <div class="o-wrap">
           <div class="resize-info"></div>
           <div class="breakpoint-info"></div>
+
+          <div class="o-grid">
+            <div class="o-grid__item">
+              <div class="grid-demo">100%</div>
+            </div>
+            <div class="o-grid__item u-1/2">
+              <div class="grid-demo">50%</div>
+            </div>
+            <div class="o-grid__item u-1/2">
+              <div class="grid-demo">50%</div>
+            </div>
+            <div class="o-grid__item u-1/3">
+              <div class="grid-demo">33.333%</div>
+            </div>
+            <div class="o-grid__item u-1/3">
+              <div class="grid-demo">33.333%</div>
+            </div>
+            <div class="o-grid__item u-1/3">
+              <div class="grid-demo">33.333%</div>
+            </div>
+            <div class="o-grid__item u-1/4">
+              <div class="grid-demo">25%</div>
+            </div>
+            <div class="o-grid__item u-1/4">
+              <div class="grid-demo">25%</div>
+            </div>
+            <div class="o-grid__item u-1/4">
+              <div class="grid-demo">25%</div>
+            </div>
+            <div class="o-grid__item u-1/4">
+              <div class="grid-demo">25%</div>
+            </div>
+            <div class="o-grid__item u-1/5">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="o-grid__item u-1/5">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="o-grid__item u-1/5">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="o-grid__item u-1/5">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="o-grid__item u-1/5">
+              <div class="grid-demo">20%</div>
+            </div>
+          </div>
         </div>
       </div>
     </spotify-panel>
@@ -42,9 +90,9 @@
 const breakpoints = {
   'main': {
     'glue-min': 376,
-    'glue-s': 592,
-    'glue-m': 860,
-    'glue-l': 1280,
+    'glue-sm': 592,
+    'glue-md': 860,
+    'glue-lg': 1280,
     'glue-max': 1496
   },
   'friend-feed': {
@@ -105,13 +153,8 @@ class SpotifyPanel extends HTMLElement {
 
         // Data Attributes
         entry.target.dataset.panelDimentions = `${width}/${height}`;
-        if (activeBreakpoints.minWidth.length) {
-          entry.target.dataset.minWidth = activeBreakpoints.minWidth.join(',');
-        }
-
-        if (activeBreakpoints.maxWidth.length) {
-          entry.target.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
-        }
+        entry.target.dataset.minWidth = activeBreakpoints.minWidth.join(',');
+        entry.target.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
       }
     });
 
