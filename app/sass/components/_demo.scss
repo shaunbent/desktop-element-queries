@@ -18,6 +18,12 @@
   width: var(--navbar-width);
 }
 
+// Section titles
+.demo-section-title {
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
 // Hide the friend feed at certain breakpoints
 .friend-feed {
   display: none;

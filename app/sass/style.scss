@@ -24,7 +24,8 @@
 @import 'elements/headings';
 @import 'elements/images';
 
-@import 'objects/grid';
+@import 'objects/grid-css';
+// @import 'objects/grid-flex';
 @import 'objects/wrapper';
 
 @import 'components/app';
@@ -33,5 +34,6 @@
 
 @import 'utilities/clearfix';
 @import 'utilities/typography';
-@import 'utilities/widths';
+@import 'utilities/span';
+// @import 'utilities/widths';
 @import 'utilities/visibility';

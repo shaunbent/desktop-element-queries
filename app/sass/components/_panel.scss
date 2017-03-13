@@ -2,14 +2,22 @@
     # PANEL
 \*------------------------------------*/
 
+/**
+ * Set some initial widths for the secondary panels
+ */
 :root {
   --navbar-width: 200px;
   --friend-feed-width: 200px;
 }
 
+/**
+ * 1. Stop the select'yness
+ */
 .c-panel {
   position: relative;
   flex: 1;
+
+  user-select: none; /* [1] */
 }
 
 /**
