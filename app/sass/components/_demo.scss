@@ -20,6 +20,7 @@
 
 // Section titles
 .demo-section-title {
+  margin-top: 16px;
   margin-bottom: 16px;
   font-weight: bold;
 }
@@ -99,7 +100,6 @@
  * Grid Demo
  */
 .grid-demo {
-  margin-bottom: 16px;
   padding: 16px;
   background-color: $c-gray-25;
   text-align: center;
