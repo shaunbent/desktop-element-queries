@@ -1,14 +1,14 @@
 {
   "name": "desktop-element-queries",
   "version": "1.0.0",
-  "description": "A test of how to mimic element queries on desktop",
+  "description": "A test of how to mimic element queries might work on desktop",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git@ghe.spotify.net:shaunb/desktop-element-queries.git"
+    "url": "git@github.com:shaunbent/desktop-element-queries.git"
   },
   "author": "Shaun Bent <shaunb@spotify.com>",
   "license": "MIT",
