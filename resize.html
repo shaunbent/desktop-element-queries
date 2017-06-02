@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spotify Desktop - Resize</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="c-app">
+  <div class="c-app__panel-container">
+    <div class="c-app__panel">
+      <div class="c-panel c-panel--secondary navbar" data-panel-name="navbar">
+        <div class="c-panel__content">
+          <p>Navbar</p>
+        </div>
+        <div class="c-panel__resizer c-panel__resizer--right"></div>
+      </div>
+    </div>
+    <spotify-panel name="main" class="c-app__panel c-app__panel--primary">
+      <div class="c-panel c-panel--primary c-demo-panel">
+        <div class="o-wrap">
+          <div class="resize-info"></div>
+          <div class="breakpoint-info"></div>
+
+          <!-- CSS Grid -->
+          <p class="demo-section-title">Card row example:</p>
+          <div class="o-grid">
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+            <div class="u-6/12 u-4/12@sm u-3/12@md u-2/12@lg">
+              <div class="grid-demo">Card</div>
+            </div>
+          </div>
+
+          <p class="demo-section-title">Grid column example:</p>
+          <div class="o-grid">
+            <div>
+              <div class="grid-demo">100%</div>
+            </div>
+            <div class="u-6/12">
+              <div class="grid-demo">50%</div>
+            </div>
+            <div class="u-6/12">
+              <div class="grid-demo">50%</div>
+            </div>
+            <div class="u-4/12">
+              <div class="grid-demo">33.333%</div>
+            </div>
+            <div class="u-4/12">
+              <div class="grid-demo">33.333%</div>
+            </div>
+            <div class="u-4/12">
+              <div class="grid-demo">33.333%</div>
+            </div>
+            <div class="u-3/12">
+              <div class="grid-demo">25%</div>
+            </div>
+            <div class="u-3/12">
+              <div class="grid-demo">25%</div>
+            </div>
+            <div class="u-3/12">
+              <div class="grid-demo">25%</div>
+            </div>
+            <div class="u-3/12">
+              <div class="grid-demo">25%</div>
+            </div>
+            <div class="u-2/12">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="u-2/12">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="u-2/12">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="u-2/12">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="u-2/12">
+              <div class="grid-demo">20%</div>
+            </div>
+            <div class="u-2/12">
+              <div class="grid-demo">20%</div>
+            </div>
+          </div>
+
+          <p class="demo-section-title">Centered Grid:</p>
+          <div class="o-grid o-grid--center">
+            <div class="u-10/12@md u-8/12@lg">
+              <div class="grid-demo">100%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </spotify-panel>
+    <spotify-panel name="friend-feed" class="c-app__panel">
+      <div class="c-panel c-panel--secondary friend-feed" data-panel-name="friend-feed">
+        <div class="c-panel__content">
+          <p>Friend Feed</p>
+        </div>
+        <div class="c-panel__resizer c-panel__resizer--left"></div>
+      </div>
+    </spotify-panel>
+  </div>
+  <div class="c-app__player">
+    <p>Player</p>
+  </div>
+</div>
+
+<script>
+const breakpoints = {
+  'main': {
+    'glue-min': 376,
+    'glue-sm': 592,
+    'glue-md': 860,
+    'glue-lg': 1280,
+    'glue-max': 1496
+  },
+  'friend-feed': {
+    'custom': 240
+  },
+};
+
+class SpotifyPanel extends HTMLElement {
+  constructor() {
+    super();
+
+    this.currentPanel = null;
+
+    this._initPanelResizer();
+    this._updateElementQueries();
+
+    window.addEventListener('resize', this._updateElementQueries.bind(this));
+  }
+
+  _initPanelResizer() {
+    const resizeHandles = document.querySelectorAll('.c-panel__resizer');
+
+    resizeHandles.forEach(handle => {
+      handle.addEventListener('mousedown', this._resizeStarted.bind(this), false);
+    });
+  }
+
+  _resizeStarted(e) {
+    this.currentPanel = e.target.parentNode;
+    window.addEventListener('mousemove', this._resizePanel.bind(this), false);
+    window.addEventListener('mouseup', this._resizeStopped.bind(this), false);
+  }
+
+  _resizeStopped() {
+    this.currentPanel = null;
+    window.removeEventListener('mousemove', this._resizePanel.bind(this), false);
+    window.removeEventListener('mouseup', this._resizeStopped.bind(this), false);
+  }
+
+  _resizePanel(e) {
+    if (this.currentPanel) {
+      const panelName = this.currentPanel.dataset.panelName;
+      let width = e.clientX;
+
+      if (panelName === 'friend-feed') {
+        width = Math.abs(e.clientX - window.innerWidth);
+      }
+
+      this._updateElementQueries();
+      this.currentPanel.style.setProperty(`--${panelName}-width`, `${width}px`);
+    }
+  }
+
+  _updateElementQueries() {
+    // this is also just for this demo
+    const breakpointInfo = document.querySelector('.breakpoint-info');
+    if (breakpointInfo) {
+      breakpointInfo.style.setProperty('display', 'block');
+    }
+
+    const width = this.clientWidth;
+    const height = this.clientWidth;
+    const currentPanel = this.getAttribute('name');
+
+    let activeBreakpoints = {
+      minWidth: [],
+      maxWidth: []
+    };
+
+    // Resize info for the demo
+    const resizeInfoElement = this.querySelector('.resize-info');
+    if (resizeInfoElement) {
+      resizeInfoElement.innerHTML = `
+        <p>
+          <b>Width:</b> ${width}px,
+          <b>Height:</b> ${height}px
+        </p>
+      `;
+    }
+
+    // Loop through the breakpoints to see if they're max or min
+    for(let breakpoint in breakpoints[currentPanel]) {
+      if (width >= breakpoints[currentPanel][breakpoint]) {
+        activeBreakpoints.minWidth.push(breakpoint);
+      } else {
+        activeBreakpoints.maxWidth.push(breakpoint);
+      }
+    }
+
+    // Data Attributes
+    this.dataset.panelDimentions = `${width}/${height}`;
+    this.dataset.minWidth = activeBreakpoints.minWidth.join(',');
+    this.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
+  }
+}
+
+customElements.define('spotify-panel', SpotifyPanel);
+
+// All this stuff has to do with making the secondary panels resizable
+// let currentPanel = null;
+// function resizeStarted(e) {
+//   currentPanel = e.target.parentNode;
+//   window.addEventListener('mousemove', resizePanel, false);
+//   window.addEventListener('mouseup', resizeStopped, false);
+// }
+//
+// function resizeStopped() {
+//   currentPanel = null;
+//   window.removeEventListener('mousemove', resizePanel, false);
+//   window.removeEventListener('mouseup', resizeStopped, false);
+// }
+//
+// function resizePanel(e) {
+//   const panelName = currentPanel.dataset.panelName;
+//   let width = e.clientX;
+//
+//   if (panelName === 'friend-feed') {
+//     width = Math.abs(e.clientX - window.innerWidth);
+//   }
+//
+//   currentPanel.style.setProperty(`--${panelName}-width`, `${width}px`);
+// }
+
+// const resizeHandles = document.querySelectorAll('.c-panel__resizer');
+//
+// resizeHandles.forEach(handle => {
+//   handle.addEventListener('mousedown', resizeStarted, false);
+// });
+</script>
+</body>
+</html>
