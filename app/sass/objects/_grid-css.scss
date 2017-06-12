@@ -47,7 +47,11 @@
   padding: 0; /* [2] */
   list-style: none; /* [3] */
 
+  @include eq($from: 'glue-md') {
+    grid-gap: 24px;
+  }
+
   > * {
-    grid-column: span 12; /* [4] */
+    grid-column: auto / span 12; /* [4] */
   }
 }

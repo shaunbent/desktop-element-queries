@@ -38,7 +38,7 @@ $glue-grid-columns: 12 !default;
   @for $numerator from 1 through $columns {
     // Build a class in the format `.u-4/12[@<breakpoint>]`.
     .u-#{$numerator}\/#{$columns}#{$breakpoint} {
-      grid-column: span #{$numerator} !important;
+      grid-column-end: span #{$numerator} !important;
     }
   }
 }

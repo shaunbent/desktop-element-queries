@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Spotify Desktop - Resize</title>
+  <title>Spotify Desktop</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -156,128 +156,107 @@ class SpotifyPanel extends HTMLElement {
   constructor() {
     super();
 
-    this.currentPanel = null;
-
-    this._initPanelResizer();
-    this._updateElementQueries();
-
-    window.addEventListener('resize', this._updateElementQueries.bind(this));
+    this._initResizeObserver();
   }
 
-  _initPanelResizer() {
-    const resizeHandles = document.querySelectorAll('.c-panel__resizer');
-
-    resizeHandles.forEach(handle => {
-      handle.addEventListener('mousedown', this._resizeStarted.bind(this), false);
-    });
-  }
-
-  _resizeStarted(e) {
-    this.currentPanel = e.target.parentNode;
-    window.addEventListener('mousemove', this._resizePanel.bind(this), false);
-    window.addEventListener('mouseup', this._resizeStopped.bind(this), false);
-  }
-
-  _resizeStopped() {
-    this.currentPanel = null;
-    window.removeEventListener('mousemove', this._resizePanel.bind(this), false);
-    window.removeEventListener('mouseup', this._resizeStopped.bind(this), false);
-  }
-
-  _resizePanel(e) {
-    if (this.currentPanel) {
-      const panelName = this.currentPanel.dataset.panelName;
-      let width = e.clientX;
-
-      if (panelName === 'friend-feed') {
-        width = Math.abs(e.clientX - window.innerWidth);
-      }
-
-      this._updateElementQueries();
-      this.currentPanel.style.setProperty(`--${panelName}-width`, `${width}px`);
+  _initResizeObserver() {
+    // this is just for this demo
+    if (typeof ResizeObserver != 'function') {
+      return this._resizeObserverWarning();
     }
-  }
 
-  _updateElementQueries() {
     // this is also just for this demo
-    const breakpointInfo = document.querySelector('.breakpoint-info');
+    const breakpointInfo = this.querySelector('.breakpoint-info');
     if (breakpointInfo) {
       breakpointInfo.style.setProperty('display', 'block');
     }
 
-    const width = this.clientWidth;
-    const height = this.clientHeight;
+    const ro = new ResizeObserver(entries => {
+      const resizeInfoElement = this.querySelector('.resize-info');
 
-    const currentPanel = this.getAttribute('name');
+      for (let entry of entries) {
+        const width = entry.contentRect.width;
+        const height = entry.contentRect.height;
+        const currentPanel = entry.target.getAttribute('name');
 
-    console.log(`Panel: ${currentPanel}`);
-    console.log(`Width: ${width}`);
-    console.log(`Height: ${height}`);
+        let activeBreakpoints = {
+          minWidth: [],
+          maxWidth: []
+        };
 
-    let activeBreakpoints = {
-      minWidth: [],
-      maxWidth: []
-    };
+        // Resize info for the demo
+        if (resizeInfoElement) {
+          resizeInfoElement.innerHTML = `
+            <p>
+              <b>Width:</b> ${width}px,
+              <b>Height:</b> ${height}px
+            </p>
+          `;
+        }
 
-    // Resize info for the demo
-    const resizeInfoElement = this.querySelector('.resize-info');
-    if (resizeInfoElement) {
-      resizeInfoElement.innerHTML = `
-        <p>
-          <b>Width:</b> ${width}px,
-          <b>Height:</b> ${height}px
-        </p>
-      `;
-    }
+        // Loop through the breakpoints to see if they're max or min
+        for(let breakpoint in breakpoints[currentPanel]) {
+          if (width >= breakpoints[currentPanel][breakpoint]) {
+            activeBreakpoints.minWidth.push(breakpoint);
+          } else {
+            activeBreakpoints.maxWidth.push(breakpoint);
+          }
+        }
 
-    // Loop through the breakpoints to see if they're max or min
-    for(let breakpoint in breakpoints[currentPanel]) {
-      if (width >= breakpoints[currentPanel][breakpoint]) {
-        activeBreakpoints.minWidth.push(breakpoint);
-      } else {
-        activeBreakpoints.maxWidth.push(breakpoint);
+        // Data Attributes
+        entry.target.dataset.panelDimentions = `${width}/${height}`;
+        entry.target.dataset.minWidth = activeBreakpoints.minWidth.join(',');
+        entry.target.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
       }
-    }
+    });
 
-    // Data Attributes
-    this.dataset.panelDimentions = `${width}/${height}`;
-    this.dataset.minWidth = activeBreakpoints.minWidth.join(',');
-    this.dataset.maxWidth = activeBreakpoints.maxWidth.join(',');
+    ro.observe(this);
+  }
+
+  _resizeObserverWarning() {
+    const resizeInfoElement = this.querySelector('.resize-info');
+
+    resizeInfoElement.innerHTML = `
+      <div class="warning">
+        <p><b>Important:</b> Requires \`ResizeObserver\`s to be enabled.</p>
+        <p>To enable in Chrome, go to \`chrome://flags\` and enable the "Experimental Web Platform flag"</p>
+      </div>
+    `;
   }
 }
 
 customElements.define('spotify-panel', SpotifyPanel);
 
 // All this stuff has to do with making the secondary panels resizable
-// let currentPanel = null;
-// function resizeStarted(e) {
-//   currentPanel = e.target.parentNode;
-//   window.addEventListener('mousemove', resizePanel, false);
-//   window.addEventListener('mouseup', resizeStopped, false);
-// }
-//
-// function resizeStopped() {
-//   currentPanel = null;
-//   window.removeEventListener('mousemove', resizePanel, false);
-//   window.removeEventListener('mouseup', resizeStopped, false);
-// }
-//
-// function resizePanel(e) {
-//   const panelName = currentPanel.dataset.panelName;
-//   let width = e.clientX;
-//
-//   if (panelName === 'friend-feed') {
-//     width = Math.abs(e.clientX - window.innerWidth);
-//   }
-//
-//   currentPanel.style.setProperty(`--${panelName}-width`, `${width}px`);
-// }
+let currentPanel = null;
+function resizeStarted(e) {
+  currentPanel = e.target.parentNode;
+  window.addEventListener('mousemove', resizePanel, false);
+  window.addEventListener('mouseup', resizeStopped, false);
+}
 
-// const resizeHandles = document.querySelectorAll('.c-panel__resizer');
-//
-// resizeHandles.forEach(handle => {
-//   handle.addEventListener('mousedown', resizeStarted, false);
-// });
+function resizeStopped() {
+  currentPanel = null;
+  window.removeEventListener('mousemove', resizePanel, false);
+  window.removeEventListener('mouseup', resizeStopped, false);
+}
+
+function resizePanel(e) {
+  const panelName = currentPanel.dataset.panelName;
+  let width = e.clientX;
+
+  if (panelName === 'friend-feed') {
+    width = Math.abs(e.clientX - window.innerWidth);
+  }
+
+  currentPanel.style.setProperty(`--${panelName}-width`, `${width}px`);
+}
+
+const resizeHandles = document.querySelectorAll('.c-panel__resizer');
+
+resizeHandles.forEach(handle => {
+  handle.addEventListener('mousedown', resizeStarted, false);
+});
 </script>
 </body>
 </html>
